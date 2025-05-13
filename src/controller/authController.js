@@ -7,6 +7,8 @@ import { Resend } from "resend";
 // import resend from "../Config/ResendConfig.js";
 
 export const register = async (req, res) => {
+return  res.json({"Sending OTP email to:", mail:email})
+
   const { name, email, password, role } = req.body;
   try {
     if (!name || !email || !password) {
@@ -232,14 +234,8 @@ export const otpVerification = async (req, res) => {
 
 export const isAuth = async (req, res) => {
   try {
+ 
     if (!req.user) {
-      return res.json({
-        success: false,
-        message: "user is not authenticated fond ",
-      });
-    }
-    const role = req.user.role;
-    if (!req.user.isUserVerified) {
       return res.json({
         success: false,
         message: "account is not verify verified failed",
