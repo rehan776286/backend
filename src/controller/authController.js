@@ -30,11 +30,17 @@ return  res.json({"Sending OTP email to:", mail:email})
           const token = jwt.sign(
             {
               id: existingUser._id,
-              isUserVerified: existingUser.isUserVerified,
+               isUserVerified: userlog.isUserVerified,
             },
             process.env.JWT_SECRET
           );
-          res.cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000 });
+          res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none", // required when using cross-site cookies
+});
+
+           
           const resend = new Resend(process.env.RESEND_API_KEY);
           await resend.emails.send({
             from: "Trend Mode <noreply@trendmode.in>",
@@ -153,12 +159,16 @@ export const login = async (req, res) => {
       {
         id: userlog._id,
         isUserVerified: userlog.isUserVerified,
-        role: userlog.role,
       },
       process.env.JWT_SECRET
     );
 
-    res.cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000 });
+  res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none", // required when using cross-site cookies
+});
+
     return res.json({ success: true, message: "user succesfully login" });
   } catch (error) {
     return res.json({
@@ -218,11 +228,15 @@ export const otpVerification = async (req, res) => {
     user.otpVerify = 0;
     await user.save();
     const token = jwt.sign(
-      { id: user._id, isUserVerified: true, role: user.role },
+      { id: user._id, isUserVerified: true, },
       process.env.JWT_SECRET
     );
+      res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none", // required when using cross-site cookies
+});
 
-    res.cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000 });
     return res.json({ success: true, message: "user successfully verified" });
   } catch (error) {
     return res.json({
