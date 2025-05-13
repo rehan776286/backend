@@ -3,7 +3,6 @@ import cors from "cors";
 import cookieparser from "cookie-parser";
 
 const app = express();
-import cors from 'cors';
 app.use(cors({
   origin: 'https://frontend-61n5.onrender.com', // your frontend URL on Render or elsewhere
   methods: ['GET', 'POST'],
