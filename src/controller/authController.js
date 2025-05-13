@@ -33,11 +33,13 @@ export const register = async (req, res) => {
             },
             process.env.JWT_SECRET
           );
-          res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none", // required when using cross-site cookies
+   res.cookie("token", token, {
+  httpOnly: true,           // prevent JavaScript access
+  secure: true,             // required for HTTPS
+  sameSite: "none",         // allow cross-site cookies
+  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
 });
+
 
            
           const resend = new Resend(process.env.RESEND_API_KEY);
@@ -95,7 +97,13 @@ export const register = async (req, res) => {
       { id: newUser._id, isUserVerified: newUser.isUserVerified },
       process.env.JWT_SECRET
     );
-    res.cookie("token", token, { maxAge: 7 * 24 * 60 * 60 * 1000 });
+   res.cookie("token", token, {
+  httpOnly: true,           // prevent JavaScript access
+  secure: true,             // required for HTTPS
+  sameSite: "none",         // allow cross-site cookies
+  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
+});
+
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
       from: "Trend Mode <noreply@trendmode.in>",
@@ -118,7 +126,7 @@ export const register = async (req, res) => {
     });
     return res.json({
       success: true,
-      role,
+      
       message: "user succecfully register",
     });
   } catch (error) {
@@ -162,10 +170,11 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET
     );
 
-  res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none", // required when using cross-site cookies
+res.cookie("token", token, {
+  httpOnly: true,           // prevent JavaScript access
+  secure: true,             // required for HTTPS
+  sameSite: "none",         // allow cross-site cookies
+  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
 });
 
     return res.json({ success: true, message: "user succesfully login" });
@@ -230,11 +239,13 @@ export const otpVerification = async (req, res) => {
       { id: user._id, isUserVerified: true, },
       process.env.JWT_SECRET
     );
-      res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "none", // required when using cross-site cookies
+ res.cookie("token", token, {
+  httpOnly: true,           // prevent JavaScript access
+  secure: true,             // required for HTTPS
+  sameSite: "none",         // allow cross-site cookies
+  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
 });
+
 
     return res.json({ success: true, message: "user successfully verified" });
   } catch (error) {
