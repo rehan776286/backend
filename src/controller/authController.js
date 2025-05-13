@@ -7,7 +7,6 @@ import { Resend } from "resend";
 // import resend from "../Config/ResendConfig.js";
 
 export const register = async (req, res) => {
-return  res.json({"Sending OTP email to:", mail:email})
 
   const { name, email, password, role } = req.body;
   try {
