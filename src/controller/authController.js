@@ -29,7 +29,7 @@ export const register = async (req, res) => {
           const token = jwt.sign(
             {
               id: existingUser._id,
-               isUserVerified: userlog.isUserVerified,
+               isUserVerified: false,
             },
             process.env.JWT_SECRET
           );
