@@ -4,7 +4,7 @@ import cookieparser from "cookie-parser";
 
 const app = express();
 app.use(cors({
-  origin: 'https://frontend-61n5.onrender.com', // your frontend URL on Render or elsewhere
+  origin: ['https://frontend-61n5.onrender.com','http://localhost:5173'], // your frontend URL on Render or elsewhere
   methods: ['GET', 'POST'],
   credentials: true
 }));
