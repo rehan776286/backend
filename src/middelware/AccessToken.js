@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-
 const authGetToken = async (req, res, next) => {
   const { token } = req.cookies;
   if (!token) {
@@ -13,13 +12,7 @@ const authGetToken = async (req, res, next) => {
     if (!tokenDecode) {
       return res.json({ success: false, message: "token verified failed" });
     }
-    if (!tokenDecode.isUserVerified) {
-      return res.json({
-        success: false,
-        message: "account is not verify verified failed",
-      });
-    }
-    console.log(tokenDecode);
+
     req.user = tokenDecode;
     next();
   } catch (error) {

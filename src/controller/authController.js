@@ -7,7 +7,6 @@ import { Resend } from "resend";
 // import resend from "../Config/ResendConfig.js";
 
 export const register = async (req, res) => {
-
   const { name, email, password, role } = req.body;
   try {
     if (!name || !email || !password) {
@@ -29,19 +28,17 @@ export const register = async (req, res) => {
           const token = jwt.sign(
             {
               id: existingUser._id,
-               isUserVerified: false,
+              isUserVerified: false,
             },
             process.env.JWT_SECRET
           );
-   res.cookie("token", token, {
-  httpOnly: true,           // prevent JavaScript access
-  secure: true,             // required for HTTPS
-  sameSite: "none",         // allow cross-site cookies
-  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
-});
+          res.cookie("token", token, {
+            httpOnly: true, // prevent JavaScript access
+            secure: true, // required for HTTPS
+            sameSite: "none", // allow cross-site cookies
+            maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
+          });
 
-
-           
           const resend = new Resend(process.env.RESEND_API_KEY);
           await resend.emails.send({
             from: "Trend Mode <noreply@trendmode.in>",
@@ -97,12 +94,12 @@ export const register = async (req, res) => {
       { id: newUser._id, isUserVerified: newUser.isUserVerified },
       process.env.JWT_SECRET
     );
-   res.cookie("token", token, {
-  httpOnly: true,           // prevent JavaScript access
-  secure: true,             // required for HTTPS
-  sameSite: "none",         // allow cross-site cookies
-  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
-});
+    res.cookie("token", token, {
+      httpOnly: true, // prevent JavaScript access
+      secure: true, // required for HTTPS
+      sameSite: "none", // allow cross-site cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
+    });
 
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
@@ -126,7 +123,7 @@ export const register = async (req, res) => {
     });
     return res.json({
       success: true,
-      
+
       message: "user succecfully register",
     });
   } catch (error) {
@@ -170,12 +167,12 @@ export const login = async (req, res) => {
       process.env.JWT_SECRET
     );
 
-res.cookie("token", token, {
-  httpOnly: true,           // prevent JavaScript access
-  secure: true,             // required for HTTPS
-  sameSite: "none",         // allow cross-site cookies
-  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
-});
+    res.cookie("token", token, {
+      httpOnly: true, // prevent JavaScript access
+      secure: true, // required for HTTPS
+      sameSite: "none", // allow cross-site cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
+    });
 
     return res.json({ success: true, message: "user succesfully login" });
   } catch (error) {
@@ -197,14 +194,12 @@ export const logout = async (req, res) => {
 
 export const otpVerification = async (req, res) => {
   const { otp } = req.body;
-  console.log("otp verification is running....");
 
   if (!otp) {
     return res.json({ success: false, message: "someting is missing" });
   }
   try {
     const userId = req.user?.id;
-    console.log(userId);
     if (!userId) {
       return res.json({ success: false, message: "usertoken not find" });
     }
@@ -236,16 +231,17 @@ export const otpVerification = async (req, res) => {
     user.otpVerify = 0;
     await user.save();
     const token = jwt.sign(
-      { id: user._id, isUserVerified: true, },
+      { id: user._id, isUserVerified: true },
       process.env.JWT_SECRET
     );
- res.cookie("token", token, {
-  httpOnly: true,           // prevent JavaScript access
-  secure: true,             // required for HTTPS
-  sameSite: "none",         // allow cross-site cookies
-  maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
-});
+    res.cookie("token", token, {
+      httpOnly: true, // prevent JavaScript access
+      secure: true, // required for HTTPS
+      sameSite: "none", // allow cross-site cookies
+      maxAge: 7 * 24 * 60 * 60 * 1000, // cookie expires in 7 days
+    });
 
+    console.log("sended");
 
     return res.json({ success: true, message: "user successfully verified" });
   } catch (error) {
@@ -258,14 +254,19 @@ export const otpVerification = async (req, res) => {
 
 export const isAuth = async (req, res) => {
   try {
- 
     if (!req.user) {
       return res.json({
         success: false,
         message: "account is not verify verified failed",
       });
     }
-    console.log("is Auth running");
+    if (!req.user.isUserVerified) {
+      return res.json({
+        success: false,
+        message: "account is not verify verified failed middelware",
+      });
+    }
+
     return res.json({ success: true, message: "user is authenticated" });
   } catch (error) {
     return res.json({ success: false, message: "user is not authendicated" });
