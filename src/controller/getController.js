@@ -87,6 +87,45 @@ export const singleProduct = async (req, res) => {
   }
 };
 
+export const productDetails = async (req, res) => {
+  try {
+    const productdetail = await ProductUploder.findById(req.params.id);
+    if (!productdetail) {
+      return res.json({ success: false, mesaage: "product cant find" });
+    }
+    const qty = quantity || 1;
+    const basePrice = productDetails.productPrice || 0;
+    const discount = 30;
+    const getGst = 18;
+    const afterDiscount = (basePrice / discount) * qty;
+    const afterGst = (afterDiscount * getGst) / 100;
+    const deliveryCharge = Price * quantity >= 5000 ? 0 : 120;
+
+    const totalAmount = afterDiscount + afterGst + deliveryCharge;
+
+    return res.json({
+      success: true,
+      Productdetails: {
+        basePrice,
+        discount,
+        getGst,
+        afterDiscount,
+        afterGst,
+        deliveryCharge,
+        totalAmount,
+      },
+      product: {
+        productImage: productdetail.productImage,
+        productName: productdetail.productName,
+      },
+    });
+  } catch (error) {
+    return res.json({
+      success: false,
+      message: `product Details fetch failed ${error}`,
+    });
+  }
+};
 const similerProduct = async (req, res) => {
   try {
     const similer = await productUploader.find({});
