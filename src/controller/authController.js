@@ -266,7 +266,7 @@ export const isAuth = async (req, res) => {
       });
     }
     console.log("is Auth running");
-    return res.json({ success: true, role, message: "user is authenticated" });
+    return res.json({ success: true, message: "user is authenticated" });
   } catch (error) {
     return res.json({ success: false, message: "user is not authendicated" });
   }
