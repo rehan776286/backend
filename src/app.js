@@ -8,7 +8,7 @@ app.use(
     origin: [
       "https://frontend-61n5.onrender.com",
       "http://localhost:5173",
-      "https://frontend-7e94-rehan-khans-projects-9543ab70.vercel.app/",
+      "https://frontend-7e94-rehan-khans-projects-9543ab70.vercel.app",
     ], // your frontend URL on Render or elsewhere
     methods: ["GET", "POST"],
     credentials: true,
