@@ -157,11 +157,11 @@ const orderPlaceSchema = mongoose.Schema(
       },
       landmark: {
         type: String,
-        required: true,
+        required: false,
       },
       altMobile: {
         type: String,
-        required: true,
+        required: false,
       },
     },
   },
