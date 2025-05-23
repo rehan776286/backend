@@ -49,6 +49,12 @@ const productSchema = mongoose.Schema(
     //     },
     //   },
     // ],
+    discount: {
+      type: Number,
+    },
+    discountedPrice: {
+      type: Number,
+    },
 
     avergerating: {
       type: Number,

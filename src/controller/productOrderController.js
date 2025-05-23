@@ -6,6 +6,7 @@ const productOrderController = async (req, res) => {
 
   const paymentMethod = req.body.paymentMethod;
   const productId = req.params.id;
+  console.log(productId);
   const userId = req.user.id;
   if (!paymentMethod) {
     return res.json({ success: false, message: "please choose paymentMethod" });
@@ -24,17 +25,28 @@ const productOrderController = async (req, res) => {
     if (!product) {
       return res.json({ success: false, message: "product is not  founded" });
     }
+
     const shippingAddress = req.body?.shippingAddress || null;
-    const productitem = {
+    const discountAmount = (product.productPrice * product.discount) / 100;
+    const finalPrice = product.productPrice - discountAmount;
+    const totalPrice = finalPrice * quantity;
+
+    const orderItem = {
       product: productId,
-      quantity: quantity,
+      quantity,
       Price: product.productPrice,
-      totalPrice: product.productPrice * quantity,
-      paymentMethod: paymentMethod,
+      discount: product.discount,
+      totalPrice,
+      DeliveryStatus: "pending",
+      PeymentMethod: paymentMethod,
+      PaymentStatus: "pending",
+      RefundItem: "not applicable",
+      refundAmount: 0,
+      DeliveryCharge: 0,
     };
     await orderplace.create({
       orderby: userId,
-      allOrder: [productitem],
+      singleOrder: orderItem,
       shippingAddress,
     });
     return res.json({ success: true, message: `order succesfully placed` });

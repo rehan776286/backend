@@ -1,5 +1,50 @@
 import mongoose from "mongoose";
 
+const addressSchema = new mongoose.Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
+    },
+    mobileNumber: {
+      type: String,
+      required: true,
+    },
+
+    pincode: {
+      type: String,
+      required: true,
+    },
+    locality: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    addressStreet: {
+      type: String,
+      required: true,
+    },
+    landmark: {
+      type: String,
+      required: false,
+    },
+    altMobile: {
+      type: String,
+      required: false,
+    },
+
+    isDefault: { type: Boolean, default: false },
+  },
+  { _id: true }
+);
+
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -42,6 +87,7 @@ const userSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  address: [addressSchema],
 });
 
 const User = mongoose.model("User", userSchema);
