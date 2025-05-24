@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import orderplace from "../model/orderModel.js";
 import ProductUploder from "../model/productModel.js";
 import productUploader from "./productUploaderController.js";
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongo db";
 export const getAllOrder = async (req, res) => {
   try {
     const allOrder = await orderplace.aggregate([

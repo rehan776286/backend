@@ -4,6 +4,12 @@ import cookieparser from "cookie-parser";
 
 const app = express();
 app.use(
+  express.static("public", {
+    maxAge: "1y",
+    immutable: true,
+  })
+);
+app.use(
   cors({
     origin: [
       "https://frontend-61n5.onrender.com",
@@ -16,8 +22,8 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ limit: "1mb", extended: true }));
 app.use(cookieparser());
 
 export default app;

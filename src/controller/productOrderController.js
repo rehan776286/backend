@@ -28,8 +28,7 @@ const productOrderController = async (req, res) => {
 
     const shippingAddress = req.body?.shippingAddress || null;
     const discountAmount = (product.productPrice * product.discount) / 100;
-    const finalPrice = product.productPrice - discountAmount;
-    const totalPrice = finalPrice * quantity;
+    const totalPrice = discountAmount * quantity;
 
     const orderItem = {
       product: productId,
