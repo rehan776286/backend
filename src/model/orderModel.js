@@ -90,13 +90,14 @@ const orderPlaceSchema = mongoose.Schema(
       DeliveryStatus: {
         type: String,
         enum: [
-          "pending",
-          "shipedd",
-          "out for delivery",
-          "delivered",
+          "Order Placed", // Order placed, awaiting processing
+          "Processing", // Order is being prepared
+          "Shipped", // Order has been shipped
+          "Out for delivery", // Order is out with the delivery agent
+          "delivered", // Order has been delivered
           "cancelled",
         ],
-        default: "pending",
+        default: "Order Placed",
         required: true,
       },
       PeymentMethod: {

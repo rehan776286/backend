@@ -15,7 +15,7 @@ app.use(
       "https://frontend-61n5.onrender.com",
       "http://localhost:5173",
       "https://frontend-1zdu.vercel.app",
-      "https://frontend-eou1.vercel.app/",
+      "https://frontend-eou1.vercel.app",
     ], // your frontend URL on Render or elsewhere
     methods: ["GET", "POST"],
     credentials: true,

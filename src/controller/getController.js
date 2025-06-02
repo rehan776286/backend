@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import orderplace from "../model/orderModel.js";
 import ProductUploder from "../model/productModel.js";
 import productUploader from "./productUploaderController.js";
+const { ObjectId } = mongoose.Types;
+
 export const getAllOrder = async (req, res) => {
   try {
     const allOrder = await orderplace.aggregate([
@@ -280,6 +282,42 @@ export const OrderList = async (req, res) => {
       message: `something is error in Orderlist ${error}`,
     });
   }
+};
+
+export const OrderedDetails = async (req, res) => {
+  const orderId = new ObjectId(req.params.id);
+  try {
+    const ordereddetails = await orderplace.aggregate([
+      { $match: { _id: orderId } },
+      {
+        $lookup: {
+          from: "productitems",
+          localField: "singleOrder.product",
+          foreignField: "_id",
+          as: "productinfo",
+        },
+      },
+      { $unwind: "$productinfo" },
+      {
+        $project: {
+          _id: 1,
+          shippingAddress: 1,
+          singleOrder: 1,
+          createdAt: 1,
+          "productinfo.productImages": 1,
+          "productinfo.productTitle": 1,
+          "productinfo.discountedPrice": 1,
+          "productinfo.productPrice": 1,
+          "productinfo.discount": 1,
+        },
+      },
+    ]);
+
+    if (!ordereddetails) {
+      return res.json({ success: false, message: "i could not fund" });
+    }
+    return res.json({ success: true, orderinfo: ordereddetails[0] });
+  } catch (error) {}
 };
 const similerProduct = async (req, res) => {
   try {
