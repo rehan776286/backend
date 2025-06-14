@@ -19,5 +19,4 @@ const authGetToken = async (req, res, next) => {
     return res.json({ success: false, message: "authGetToken failed" });
   }
 };
-
 export default authGetToken;

@@ -71,6 +71,16 @@ const productSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+productSchema.index({
+  productTitle: "text",
+  productBrandName: "text",
+  productDescription: "text",
+});
+
+productSchema.index({ category: 1 }); // okay, category exists
+productSchema.index({ productBrandName: 1 }); // fix from brand to productBrandName
+productSchema.index({ productPrice: 1 }); // fix from price to productPrice
+productSchema.index({ createdAt: -1 });
 
 const ProductUploder = mongoose.model("ProductItem", productSchema);
 

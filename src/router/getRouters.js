@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  filterAndSearch,
   getAllOrder,
   getAllProduct,
   OrderedDetails,
@@ -19,5 +20,6 @@ getRouter.post("/productdetail/:id", productDetails);
 getRouter.get("/orderdetails", authGetToken, OrderPlaceDetails);
 getRouter.get("/orderlist", authGetToken, OrderList);
 getRouter.get("/orderinfo/:id", OrderedDetails);
+getRouter.post("/filter", filterAndSearch);
 
 export default getRouter;

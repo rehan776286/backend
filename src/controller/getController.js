@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import orderplace from "../model/orderModel.js";
 import ProductUploder from "../model/productModel.js";
 import productUploader from "./productUploaderController.js";
+import { join } from "path";
 const { ObjectId } = mongoose.Types;
 
 export const getAllOrder = async (req, res) => {
@@ -323,4 +324,36 @@ const similerProduct = async (req, res) => {
   try {
     const similer = await productUploader.find({});
   } catch (error) {}
+};
+
+export const filterAndSearch = async (req, res) => {
+  const { keyword, brand, minPrice, maxPrice, limit = 2, page } = req.body;
+
+  try {
+    console.log(keyword);
+    const matchStage = {
+      ...(keyword && { $text: { $search: keyword } }),
+      ...(brand && {
+        productBrandName: { $regex: brand, $options: "i" },
+      }),
+      ...((minPrice || maxPrice) && {
+        productPrice: {
+          ...(minPrice && { $gte: Number(minPrice) }),
+          ...(maxPrice && { $lte: Number(maxPrice) }),
+        },
+      }),
+    };
+    console.log(matchStage);
+    const skip = (page - 1) * limit;
+    // if (keyword) query.productTitle = { $regex: keyword, $options: "i" };
+
+    // if (brand) query.productBrandName = { $regex: brand, $options: "i" };
+    // console.log(query);
+    const resut = await ProductUploder.find(matchStage).skip(skip).limit(limit);
+    console.log(resut);
+
+    return res.json({ filter: resut });
+  } catch (error) {
+    console.log(error);
+  }
 };

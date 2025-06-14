@@ -3,6 +3,7 @@ import ProductUploder from "../model/productModel.js";
 
 const productOrderController = async (req, res) => {
   const quantity = req.body?.quantity || 1;
+  console.log("productOrder is running");
 
   const paymentMethod = req.body.paymentMethod;
   const productId = req.params.id;
@@ -36,7 +37,7 @@ const productOrderController = async (req, res) => {
       Price: product.productPrice,
       discount: product.discount,
       totalPrice,
-      DeliveryStatus: "pending",
+      DeliveryStatus: "Order Placed",
       PeymentMethod: paymentMethod,
       PaymentStatus: "pending",
       RefundItem: "not applicable",

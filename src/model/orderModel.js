@@ -168,6 +168,8 @@ const orderPlaceSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
+orderPlaceSchema.index({ orderby: 1 });
+
 const orderplace = mongoose.model("orderPlace", orderPlaceSchema);
 
 export default orderplace;
